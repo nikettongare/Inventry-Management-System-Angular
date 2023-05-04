@@ -64,7 +64,8 @@ export class RegisterComponent {
       this.isLoading = true;
 
       try {
-        const result = await networkRequest.send(`${BACKEND_URL}/user/register`, "POST", payload)
+        const queryString = new URLSearchParams(payload).toString();
+        const result = await networkRequest.send(`${BACKEND_URL}/user/register?${queryString}`, "POST")
         console.log(result);
         
         if(!result) {

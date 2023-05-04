@@ -96,6 +96,7 @@ export class AddSupplierComponent {
   postalCode: any = new FormControl('', [Validators.required]);
   state: any = new FormControl('', [Validators.required]);
   country: any = new FormControl('', [Validators.required]);
+  fax: any = new FormControl('', []);
 
   addContentForm: any = new FormGroup({
     supplierName: this.supplierName,
@@ -106,6 +107,7 @@ export class AddSupplierComponent {
     postalCode: this.postalCode,
     state: this.state,
     country: this.country,
+    fax: this.fax,
   });
 
   formBuilder: any = {
@@ -179,6 +181,14 @@ export class AddSupplierComponent {
       formControlName: 'country',
       error: '',
     },
+    fax: {
+      label: 'Fax',
+      type: 'text',
+      id: 'Fax',
+      name: 'Fax',
+      formControlName: 'fax',
+      error: '',
+    },
   };
 
   formBuilderArray: any[] = Object.values(this.formBuilder);
@@ -189,31 +199,33 @@ export class AddSupplierComponent {
     if (this.addContentForm.valid) {
       // Submit the login form
       const payload = {
-        supplierName: this.addContentForm.value.supplierName,
-        phone: this.addContentForm.value.phone,
-        email: this.addContentForm.value.email,
-        address: this.addContentForm.value.address,
-        city: this.addContentForm.value.city,
-        postalCode: this.addContentForm.value.postalCode,
-        state: this.addContentForm.value.state,
-        country: this.addContentForm.value.country,
+        Name: this.addContentForm.value.supplierName,
+        PhoneNo: this.addContentForm.value.phone,
+        EmailId: this.addContentForm.value.email,
+        Address: this.addContentForm.value.address,
+        City: this.addContentForm.value.city,
+        PostalCode: this.addContentForm.value.postalCode,
+        State: this.addContentForm.value.state,
+        Country: this.addContentForm.value.country,
+        Fax: this.addContentForm.value.fax,
       };
 
-      console.log(payload);
+      const queryString = new URLSearchParams(payload).toString();
+
       this.isLoading = true;
 
       try {
         let url, method;
         if (this.router.url === "add-supplier") {
-          url = `${BACKEND_URL}/Supplier/register`;
+          url = `${BACKEND_URL}/Supplier/register?${queryString}`;
           method = "POST"
         } else {
           const id = this.fetchedData['supplierId'];
-          url = `${BACKEND_URL}/Supplier/${id}`;
+          url = `${BACKEND_URL}/Supplier/${id}?${queryString}`;
           method = "PUT"
         }
 
-        const result = await networkRequest.send(url, method, payload);;
+        const result = await networkRequest.send(url, method);;
         console.log(result);
         if (!result) {
           this.openSnackBar(`data submitted successfully!`, 'Close');

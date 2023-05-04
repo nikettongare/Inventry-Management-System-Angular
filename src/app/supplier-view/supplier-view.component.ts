@@ -147,7 +147,7 @@ export class SupplierViewComponent {
     }
 
     // Update the page title
-    this.titleService.setTitle(`${APP_NAME} | Supplier`);
+    this.titleService.setTitle(`${APP_NAME} | ${this.viewName}`);
   }
 
   async fetchUsersData(email: string) {
@@ -225,9 +225,33 @@ export class SupplierViewComponent {
     });
   }
 
-  editRow(index: number) {  
+  editRow(index: number) {
     const objId = this.fetchedData[index]["supplierId"];
     this.router.navigate([`/edit-supplier/${objId}`]);
+  }
+
+
+  searchItem(event: any) {
+    const searchText = event.target.value;
+
+    if (!searchText) {
+      this.data = this.fetchedData.map((item: any) => {
+        const { name, phoneNo, emailId, address, postalCode, country, state, city } = item;
+        return { name, phoneNo, emailId, address, postalCode, country, state, city };
+      });
+    }
+
+    let searchedList = this.data.filter(item => Object.values(item).some((value: any) => value.includes(searchText)));
+
+    if (searchedList) {
+      this.data = searchedList;
+    } else {
+      this.data = []
+    }
+    this.valuesData = this.data.length
+      ? this.data.map((item) => Object.values(item))
+      : [];
+    this.keysList = this.data.length ? Object.keys(this.data[0]) : [];
   }
 
   openSnackBar(message: string, action: string) {

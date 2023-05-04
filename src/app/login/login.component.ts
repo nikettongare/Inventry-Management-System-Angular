@@ -58,7 +58,8 @@ export class LoginComponent implements OnInit {
       this.isLoading = true;
 
       try {
-        const result = await networkRequest.send(`${BACKEND_URL}/user/login`, "POST", payload)
+        const queryString = new URLSearchParams(payload).toString();
+        const result = await networkRequest.send(`${BACKEND_URL}/user/login?${queryString}`, "POST")
         console.log(result);
 
         if (!result) {

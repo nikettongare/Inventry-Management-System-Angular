@@ -63,7 +63,8 @@ export class HomeComponent implements OnInit {
 
   async fetchUsersData(email: string) {
     try {
-      const result = await networkRequest.send(`${BACKEND_URL}/user/${email}`, "GET")
+      const result = await networkRequest.send(`${BACKEND_URL}/User?EmailId=${email}`, "GET")
+
       console.log(result);
 
       if (!result) {

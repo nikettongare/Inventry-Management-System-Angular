@@ -17,11 +17,11 @@ const NAV_ITEMS: any[] = [
   },
   {
     title: 'Purchase Orders',
-    href: '/purchase',
+    href: '/purchase-order',
   },
   {
     title: 'Sales Order',
-    href: '/sales',
+    href: '/sales-order',
   },
 ];
 
