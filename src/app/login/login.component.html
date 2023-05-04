@@ -53,6 +53,9 @@
           <div *ngIf="loginForm.get('password')!.errors!['required']">
             Password is required.
           </div>
+          <div *ngIf="loginForm.get('password')!.errors!['pattern']">
+            Invalid password, password must contains atleast 1 Uppercase latter, 1 Special case latter and 1 Number and it will 8 characters long.
+          </div>
         </div>
       </div>
       <button

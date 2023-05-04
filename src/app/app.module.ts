@@ -24,6 +24,7 @@ import { AddSalesOrderComponent } from './add-sales-order/add-sales-order.compon
 import { AddPurchaseOrderComponent } from './add-purchase-order/add-purchase-order.component';
 import { AsidePanelComponent } from './aside-panel/aside-panel.component';
 import { AppbarComponent } from './appbar/appbar.component';
+
 @NgModule({
   declarations: [
     AppComponent,

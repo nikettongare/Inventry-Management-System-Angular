@@ -31,9 +31,9 @@ export class RegisterComponent {
   }
 
   name: any = new FormControl('', [Validators.required]);
-  phone: any = new FormControl('', [Validators.required, Validators.pattern((/^\d+$/))]);
+  phone: any = new FormControl('', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]);
   email: any = new FormControl('', [Validators.required, Validators.email]);
-  password: any = new FormControl('', [Validators.required]);
+  password: any = new FormControl('', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]);
 
   isLoading = false;
 
@@ -67,7 +67,6 @@ export class RegisterComponent {
         const result = await networkRequest.send(`${BACKEND_URL}/user/register`, "POST", payload)
         console.log(result);
         
-
         if(!result) {
           this.openSnackBar(`Unable to Registered user.`, 'Close');
           this.isLoading = false;
@@ -79,7 +78,7 @@ export class RegisterComponent {
         this.router.navigate(['/login']);
       } catch (error: any) {
         console.log(error);
-        this.openSnackBar(`${error.message}`, 'Close');
+        this.openSnackBar(`${error.message || error}`, 'Close');
         this.isLoading = false;
       }
     }

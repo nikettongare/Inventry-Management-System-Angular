@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   email: any = new FormControl('', [Validators.required, Validators.email]);
-  password: any = new FormControl('', [Validators.required]);
+  password: any = new FormControl('', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]);
 
   isLoading: boolean = false;
 
@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']);
       } catch (error: any) {
         console.log(error);
-        this.openSnackBar(`${error.message}`, 'Close');
+        this.openSnackBar(`${error.message || error}`, 'Close');
         this.isLoading = false;
       }
     }
