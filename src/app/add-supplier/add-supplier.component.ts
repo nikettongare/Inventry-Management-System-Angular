@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { APP_NAME, NAV_ITEMS } from 'src/config';
+import { APP_NAME, BACKEND_URL, NAV_ITEMS } from 'src/config';
 import networkRequest from 'src/utils/NetworkRequest';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -62,7 +62,7 @@ export class AddSupplierComponent {
 
   async getData(id: string) {
     try {
-      const result = await networkRequest.getViewData(id);
+      const result = await  networkRequest.send(`${BACKEND_URL}/PurchaseOrder`, "GET");
 
       // this.addContentForm.setValue({
       //   supplierName: "Hello",

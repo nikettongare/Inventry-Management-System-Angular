@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { APP_NAME, BACKEND_URL, NAV_ITEMS } from 'src/config';
-import { Router } from '@angular/router';
+import { APP_NAME, BACKEND_URL } from 'src/config';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import networkRequest from 'src/utils/NetworkRequest';
 
@@ -10,39 +9,33 @@ import networkRequest from 'src/utils/NetworkRequest';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  constructor(private snackBar: MatSnackBar, private router: Router, private titleService: Title, private metaService: Meta) { }
-  AppName: string = APP_NAME;
-  NavItems: any[] = NAV_ITEMS;
-
-  CurrentRoute: string = this.router.url;
-  openUserDropdown: boolean = false;
-  isLoading:boolean = false;
+  constructor(private snackBar: MatSnackBar, private titleService: Title, private metaService: Meta) { }
+  isLoading: boolean = false;
 
   // Fetch from backend and then update
   userData: { [key: string]: any } = {
-    name: "Bakasur Chanawala"
+    name: "Unknown User"
   }
 
   CardList: any[] = [
     {
       title: "Total Purchase",
-      subtitle: "20",
+      subtitle: "00",
       image: "assets/shopping-cart.png"
     }, {
       title: "Total Products",
-      subtitle: "40",
+      subtitle: "00",
       image: "assets/cubes.png"
     }, {
       title: "Total Sales",
-      subtitle: "220",
+      subtitle: "00",
       image: "assets/economy.png"
     }, {
       title: "Suppliers",
-      subtitle: "22",
+      subtitle: "00",
       image: "assets/store.png"
     },
   ]
-
 
   ngOnInit(): void {
     // Update the page title
@@ -68,12 +61,6 @@ export class HomeComponent implements OnInit {
 
   }
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 5000,
-    });
-  }
-
   async fetchUsersData(email: string) {
     try {
       const result = await networkRequest.send(`${BACKEND_URL}/user/${email}`, "GET")
@@ -96,18 +83,39 @@ export class HomeComponent implements OnInit {
 
   async fetchStatData() {
     try {
-      const result = await networkRequest.send(`${BACKEND_URL}/stat`, "GET")
-      console.log(result);
+      const [purchaseRes, productRes, salesRes, supplierRes] = await Promise.all([
+        networkRequest.send(`${BACKEND_URL}/PurchaseOrder`, "GET"),
+        networkRequest.send(`${BACKEND_URL}/Product`, "GET"),
+        networkRequest.send(`${BACKEND_URL}/SalesOrder`, "GET"),
+        networkRequest.send(`${BACKEND_URL}/Supplier`, "GET"),
+      ]);
 
-      if (!result) {
-        this.openSnackBar(`Userdata not found!`, 'Close');
+      console.log(purchaseRes, productRes, salesRes, supplierRes);
+
+      if (!purchaseRes || !productRes || !salesRes || !supplierRes) {
+        this.openSnackBar(`Unable to load the home statics data.`, 'Close');
         this.isLoading = false;
         return;
       }
 
-      //  after card logic | homepage data api pending
-      this.CardList.forEach((card) => {
+      const purchaseCount = purchaseRes.length;
+      const productCount = productRes.length;
+      const salesCount = salesRes.length;
+      const supplierCount = supplierRes.length;
 
+      this.CardList.forEach((card) => {
+        if (card.title === "Total Purchase") {
+          card.subtitle = purchaseCount
+        }
+        else if (card.title === "Total Products") {
+          card.subtitle = productCount
+        }
+        else if (card.title === "Total Sales") {
+          card.subtitle = salesCount
+        }
+        else if (card.title === "Suppliers") {
+          card.subtitle = supplierCount
+        }
       })
       this.isLoading = false;
     } catch (error: any) {
@@ -117,8 +125,9 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  toggleUserDropDown() {
-    this.openUserDropdown = !this.openUserDropdown;
-    console.log(this.openUserDropdown);
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 5000,
+    });
   }
 }

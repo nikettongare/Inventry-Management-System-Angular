@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { APP_NAME, NAV_ITEMS } from 'src/config';
+import { APP_NAME, BACKEND_URL, NAV_ITEMS } from 'src/config';
 import networkRequest from 'src/utils/NetworkRequest';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -119,7 +119,7 @@ export class MetaviewComponent implements OnInit {
 
   async getData(name: string) {
     try {
-      const result = await networkRequest.getViewData(name);
+      const result = await networkRequest.send(`${BACKEND_URL}/PurchaseOrder`, "GET");
 
       console.log(result);
     } catch (error) {

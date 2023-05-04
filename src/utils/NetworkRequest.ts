@@ -27,17 +27,6 @@ class NetworkRequest {
         }
 
     }
-
-
-    public async getViewData(viewName: string) {
-        try {
-            const result = await this.send("https://dummyjson.com/products/1");
-
-            return result;
-        } catch (error: any) {
-            throw error.message;
-        }
-    }
 }
 
 const networkRequest =  new NetworkRequest();
