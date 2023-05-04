@@ -37,7 +37,7 @@ export class RegisterComponent {
 
   isLoading = false;
 
-  loginForm = new FormGroup({
+  registerForm = new FormGroup({
     name: this.name,
     phone:this.phone,
     email: this.email,
@@ -51,13 +51,13 @@ export class RegisterComponent {
   }
 
   async onSubmit() {
-    if (this.loginForm.valid) {
+    if (this.registerForm.valid) {
       // Submit the login form
       const payload = {
-        Name: this.loginForm.value.name,
-        Phone: this.loginForm.value.phone,
-        EmailId: this.loginForm.value.email,
-        Password: this.loginForm.value.password,
+        Name: this.registerForm.value.name,
+        Phone: this.registerForm.value.phone,
+        EmailId: this.registerForm.value.email,
+        Password: this.registerForm.value.password,
       };
 
       console.log(payload);

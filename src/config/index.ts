@@ -1,28 +1,28 @@
-const APP_NAME: string = "InverTRO";
+const APP_NAME: string = 'InverTRO';
 
-const BACKEND_URL: string = "http://localhost:8080/api";
+const BACKEND_URL: string = 'http://localhost:8080/api';
 
-const NAV_ITEMS: any[] = [{
+const NAV_ITEMS: any[] = [
+  {
     title: 'Home',
     href: '/',
-},
-{
+  },
+  {
     title: 'Supplier',
-    href: "/view/supplier",
-}, {
+    href: '/supplier',
+  },
+  {
     title: 'Product',
-    href: '/view/product',
-}, {
+    href: '/product',
+  },
+  {
     title: 'Purchase Orders',
-    href: '/view/purchase',
-}, {
+    href: '/purchase',
+  },
+  {
     title: 'Sales Order',
-    href: '/view/sales',
-},
-
+    href: '/sales',
+  },
 ];
 
-
-
-
-export { APP_NAME, NAV_ITEMS, BACKEND_URL }
+export { APP_NAME, NAV_ITEMS, BACKEND_URL };

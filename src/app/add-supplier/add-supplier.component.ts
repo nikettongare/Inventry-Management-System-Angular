@@ -12,13 +12,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   templateUrl: './add-supplier.component.html',
 })
 export class AddSupplierComponent {
-  AppName: string = APP_NAME;
-  NavItems: any[] = NAV_ITEMS;
-  isLoading: boolean = false;
-  errorText: string = '';
-  openUserDropdown: boolean = false;
-  CurrentRoute: string = this.router.url;
-
   constructor(
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
@@ -28,19 +21,16 @@ export class AddSupplierComponent {
     private metaService: Meta
   ) { }
 
+  isLoading: boolean = false;
+  errorText: string = '';
+  userData: { [key: string]: any } = {
+    name: "Unknown User"
+  }
+  fetchedData: { [key: string]: any } = {};
+
   ngOnInit() {
     // Update the page title
-    this.titleService.setTitle(`${APP_NAME} | Dashboard`);
-
-    // Update the meta tags
-    this.metaService.updateTag({
-      name: 'description',
-      content: `Please Login into the ${APP_NAME}`,
-    });
-    this.metaService.updateTag({
-      name: 'keywords',
-      content: `${APP_NAME}, login, signin`,
-    });
+    this.titleService.setTitle(`${APP_NAME}`);
 
     // check for user authentication
     const xAuth = localStorage.getItem('x-auth');
@@ -49,50 +39,52 @@ export class AddSupplierComponent {
       // this.router.navigate(['/login']);
     }
 
-    this.route.paramMap.subscribe((params) => {
-      let id = params.get('id');
+    console.log(this.router.url);
+    if (this.router.url !== "add-supplier") {
+      this.route.paramMap.subscribe((params) => {
+        let id = params.get('id');
 
-      console.log(id);
+        console.log(id);
 
-      if (id) {
-        this.getData(id);
-      }
-    });
-  }
-
-  async getData(id: string) {
-    try {
-      const result = await  networkRequest.send(`${BACKEND_URL}/PurchaseOrder`, "GET");
-
-      // this.addContentForm.setValue({
-      //   supplierName: "Hello",
-      //   phone: "Hello",
-      //   email: "Hello",
-      //   address: "Hello",
-      //   city: "Hello",
-      //   postalCode: "Hello",
-      //   state: "Hello",
-      //   country: "Hello",
-      // })
-
-      console.log(result);
-    } catch (error) {
-      console.log(error);
+        if (id) {
+          this.getData(id);
+        }
+      });
     }
   }
 
-  // Temp remove later
-  UsersName: string = 'Bakasur Chanawala';
+  async getData(id: string) {
+    this.isLoading = true;
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 10000,
-    });
-  }
+    try {
+      const result = await networkRequest.send(`${BACKEND_URL}/Supplier/${id}`, "GET");
 
-  toggleUserDropDown() {
-    this.openUserDropdown = !this.openUserDropdown;
-    console.log(this.openUserDropdown);
+      console.log(result);
+
+      if (!result) {
+        this.openSnackBar(`Data not found with id: ${id}`, 'Close');
+        this.isLoading = false;
+        this.router.navigate([`**`]);
+        return;
+      }
+
+      this.fetchedData = result;
+
+      this.addContentForm.patchValue({
+        supplierName: result.name,
+        phone: result.phoneNo,
+        email: result.emailId,
+        address: result.address,
+        city: result.city,
+        postalCode: result.postalCode,
+        state: result.state,
+        country: result.country,
+      })
+      this.isLoading = false;
+    } catch (error) {
+      console.log(error);
+      this.openSnackBar(`Unable to load data with id: ${id}`, 'Close');
+    }
   }
 
   // form add suplier
@@ -211,12 +203,24 @@ export class AddSupplierComponent {
       this.isLoading = true;
 
       try {
-        const result = await networkRequest.send(
-          'https://jsonplaceholder.typicode.com/todos/1'
-        );
+        let url, method;
+        if (this.router.url === "add-supplier") {
+          url = `${BACKEND_URL}/Supplier/register`;
+          method = "POST"
+        } else {
+          const id = this.fetchedData['supplierId'];
+          url = `${BACKEND_URL}/Supplier/${id}`;
+          method = "PUT"
+        }
+
+        const result = await networkRequest.send(url, method, payload);;
         console.log(result);
+        if (!result) {
+          this.openSnackBar(`data submitted successfully!`, 'Close');
+          this.isLoading = false;
+        }
+
         this.isLoading = false;
-        localStorage.setItem('x-auth', JSON.stringify(result));
         this.openSnackBar(`Data added`, 'Close');
       } catch (error: any) {
         console.log(error);
@@ -257,5 +261,11 @@ export class AddSupplierComponent {
 
       }
     }
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 10000,
+    });
   }
 }

@@ -1,7 +1,7 @@
 <div class="flex justify-center items-center min-h-screen bg-gray-100">
     <div class="max-w-md w-full px-6 py-8 bg-white shadow-md rounded-md">
       <h2 class="text-2xl font-bold mb-4">Please Register</h2>
-      <form [formGroup]="loginForm" (submit)="onSubmit()" class="space-y-4">
+      <form [formGroup]="registerForm" (submit)="onSubmit()" class="space-y-4">
         <div>
           <label for="name" class="block text-gray-700 font-bold mb-2"
             >Name:</label
@@ -17,12 +17,12 @@
   
           <div
             *ngIf="
-              loginForm.get('name')!.invalid &&
-              (loginForm.get('name')!.dirty || loginForm.get('name')!.touched)
+              registerForm.get('name')!.invalid &&
+              (registerForm.get('name')!.dirty || registerForm.get('name')!.touched)
             "
             class="text-red-500 text-sm mt-1 ml-2"
           >
-            <div *ngIf="loginForm.get('name')!.errors!['required']">
+            <div *ngIf="registerForm.get('name')!.errors!['required']">
               Name is required.
             </div>            
           </div>
@@ -42,15 +42,15 @@
   
           <div
             *ngIf="
-              loginForm.get('phone')!.invalid &&
-              (loginForm.get('phone')!.dirty || loginForm.get('phone')!.touched)
+              registerForm.get('phone')!.invalid &&
+              (registerForm.get('phone')!.dirty || registerForm.get('phone')!.touched)
             "
             class="text-red-500 text-sm mt-1 ml-2"
           >
-            <div *ngIf="loginForm.get('phone')!.errors!['required']">
+            <div *ngIf="registerForm.get('phone')!.errors!['required']">
               Phone is required.
             </div>  
-            <div *ngIf="loginForm.get('phone')!.errors!['pattern']">
+            <div *ngIf="registerForm.get('phone')!.errors!['pattern']">
               Phone must only contains 10 digits.
             </div>                   
           </div>
@@ -70,15 +70,15 @@
   
           <div
             *ngIf="
-              loginForm.get('email')!.invalid &&
-              (loginForm.get('email')!.dirty || loginForm.get('email')!.touched)
+              registerForm.get('email')!.invalid &&
+              (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)
             "
             class="text-red-500 text-sm mt-1 ml-2"
           >
-            <div *ngIf="loginForm.get('email')!.errors!['required']">
+            <div *ngIf="registerForm.get('email')!.errors!['required']">
               Email is required.
             </div>
-            <div *ngIf="loginForm.get('email')!.errors!['email']">
+            <div *ngIf="registerForm.get('email')!.errors!['email']">
               Email must be a valid email address.
             </div>
           </div>
@@ -97,16 +97,16 @@
           />
           <div
             *ngIf="
-              loginForm.get('password')!.invalid &&
-              (loginForm.get('password')!.dirty ||
-                loginForm.get('password')!.touched)
+              registerForm.get('password')!.invalid &&
+              (registerForm.get('password')!.dirty ||
+                registerForm.get('password')!.touched)
             "
             class="text-red-500 text-sm mt-1 ml-2"
           >
-            <div *ngIf="loginForm.get('password')!.errors!['required']">
+            <div *ngIf="registerForm.get('password')!.errors!['required']">
               Password is required.
             </div>
-            <div *ngIf="loginForm.get('password')!.errors!['pattern']">
+            <div *ngIf="registerForm.get('password')!.errors!['pattern']">
               Invalid password, password must contains atleast 1 Uppercase latter, 1 Special case latter and 1 Number and it will 8 characters long.
             </div>
           </div>
@@ -114,7 +114,7 @@
         <button
           type="submit"
           class="bg-blue-400 w-full disabled:bg-blue-400 hover:bg-blue-700 cursor-pointer text-white font-bold py-2 px-4 rounded-md disabled:opacity-50"
-          [disabled]="!loginForm.valid || isLoading"
+          [disabled]="!registerForm.valid || isLoading"
         >
           <div *ngIf="isLoading" class="flex items-center justify-center gap-2">
             <svg

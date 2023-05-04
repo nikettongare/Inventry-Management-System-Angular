@@ -1,104 +1,10 @@
 <main class="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
   <div class="flex items-start justify-between">
-    <!-- Side bar -->
-    <aside class="relative h-screen shadow-lg lg:block w-60">
-      <div
-        class="h-full bg-white dark:bg-gray-700 flex flex-col justify-between"
-      >
-        <!-- flex seprator -->
-        <div>
-          <!-- App Title -->
-          <div class="flex items-center justify-start pt-6 ml-8">
-            <p class="text-xl font-bold dark:text-white">
-              {{ AppName }}
-            </p>
-          </div>
-          <!-- Nav items -->
-          <nav class="mt-6 flex flex-col justify-between">
-            <a
-              *ngFor="let items of NavItems"
-              class="flex py-4 px-8 text-sm font-medium text-gray-400 hover:text-gray-950 hover:bg-gray-100 border-l-4"
-              [ngClass]="
-                items.href === CurrentRoute
-                  ? 'border-purple-500 bg-gray-50'
-                  : 'border-transparent'
-              "
-              href="{{ items.href }}"
-            >
-              {{ items.title }}
-            </a>
-          </nav>
-        </div>
-
-        <!-- logout button -->
-        <button
-          class="flex py-4 px-8 text-sm font-medium text-gray-400 hover:text-gray-950 hover:bg-gray-100 border-l-4"
-        >
-          Log Out
-        </button>
-      </div>
-    </aside>
+        <!-- Side bar -->
+        <app-aside-panel />
     <div class="flex flex-col w-full md:space-y-4">
-      <!-- header | appbar -->
-      <header class="z-40 flex items-center justify-between w-full h-16">
-        <div
-          class="relative z-20 flex flex-col justify-end h-full px-3 md:w-full"
-        >
-          <div class="relative flex items-center justify-end w-full gap-2">
-            <!-- Users Icon -->
-            <span class="relative block">
-              <img
-                alt="profil"
-                src="assets/placeholder.png"
-                class="mx-auto object-cover rounded-full h-10 w-10"
-              />
-            </span>
-            <!-- Users Name -->
-            <p class="flex items-center text-gray-500 dark:text-white text-md">
-              {{ UsersName }}
-            </p>
-
-            <span class="relative felx items-center">
-              <button (click)="toggleUserDropDown()" class="cursor-pointer">
-                <svg
-                  width="20"
-                  height="20"
-                  class="text-gray-400 cursor-pointer rounded-full hover:bg-gray-200"
-                  fill="currentColor"
-                  viewBox="0 0 1792 1792"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1408 704q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45z"
-                  ></path>
-                </svg>
-              </button>
-
-              <div
-                *ngIf="openUserDropdown"
-                class="absolute right-0 w-56 mt-4 origin-top-right bg-white rounded-md shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
-              >
-                <div
-                  class="py-1"
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="options-menu"
-                >
-                  <a
-                    href="#"
-                    class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600"
-                    role="menuitem"
-                  >
-                    <span class="flex flex-col">
-                      <span> Profile </span>
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </span>
-          </div>
-        </div>
-      </header>
+     <!-- header | appbar -->
+     <app-appbar [username]="userData['name']" />
       <!-- Main Content -->
       <div class="h-screen px-4 pb-24 overflow-auto md:px-6">
         <section class="mt-2 bg-gray-100/50">
@@ -188,7 +94,7 @@
                     </svg>
                     <span>Loading...</span>
                   </div>
-                  <span *ngIf="!isLoading">Login</span>
+                  <span *ngIf="!isLoading">Submit</span>
                 </button>
               </div>
             </div>
@@ -199,29 +105,3 @@
   </div>
 </main>
 
-<!-- <label class="text-gray-700" for="animals">
-    Animals
-    <select id="animals" class="block px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm w-52 focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="animals">
-        <option value="">
-            Select an option
-        </option>
-        <option value="dog">
-            Dog
-        </option>
-        <option value="cat">
-            Cat
-        </option>
-        <option value="hamster">
-            Hamster
-        </option>
-        <option value="parrot">
-            Parrot
-        </option>
-        <option value="spider">
-            Spider
-        </option>
-        <option value="goldfish">
-            Goldfish
-        </option>
-    </select>
-  </label> -->

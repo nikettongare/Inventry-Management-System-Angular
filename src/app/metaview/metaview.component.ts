@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { APP_NAME, BACKEND_URL, NAV_ITEMS } from 'src/config';
+import { APP_NAME, BACKEND_URL } from 'src/config';
 import networkRequest from 'src/utils/NetworkRequest';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -21,17 +21,17 @@ export class MetaviewComponent implements OnInit {
     private metaService: Meta
   ) { }
 
-
-  viewName: string | null = '';
+  viewName: string = '';
   isLoading: boolean = false;
-  isLoadingBar: boolean = false;
-  AppName: string = APP_NAME;
-  NavItems: any[] = NAV_ITEMS;
-  openUserDropdown: boolean = false;
-  CurrentRoute: string = this.router.url;
+  currentView: { [key: string]: any; } | undefined ;
 
-  // Temp remove later
-  UsersName: string = 'Bakasur IceCreamWala';
+  isLoadingBar: boolean = false;
+
+  // Fetch from backend and then update
+  userData: { [key: string]: any } = {
+    name: "Unknown User"
+  }
+
   data: any[] = [
     {
       supplier_name: 'Bakasur Chanawala',
@@ -78,6 +78,8 @@ export class MetaviewComponent implements OnInit {
       state: 'Japan',
       country: 'Moon',
     },
+
+
   ];
 
   valuesData: any[] = this.data.length ? this.data.map((item) => Object.values(item)) : [];
@@ -85,45 +87,68 @@ export class MetaviewComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
-      this.viewName = params.get('name');
-
-      if (!this.viewName) {
+      if (!params.get('name')) {
         this.router.navigate(['**']);
       }
 
+      if (params.get('name') !== null) {
+        this.viewName = params.get('name')!;
+      }
+    
       // check for user authentication
-      const xAuth = localStorage.getItem('x-auth');
+      const xAuth = localStorage.getItem("x-auth");
 
       if (!xAuth) {
-        // UsersName = JSON.parse(xAuth).name;
-        console.log('User Already logged In.', typeof xAuth);
+        console.log('User Not Exist Please log In.');
         // this.router.navigate(['/login']);
       }
 
-      this.getData(name!);
+      if (xAuth) {
+        const email = JSON.parse(xAuth).email;
+        // this.fetchUsersData(email);
+      }
+
+      this.fetchViewDataList();
 
       // Update the page title
-      this.titleService.setTitle(`${APP_NAME} | Dashboard`);
-
-      // Update the meta tags
-      this.metaService.updateTag({
-        name: 'description',
-        content: `Please Login into the ${APP_NAME}`,
-      });
-      this.metaService.updateTag({
-        name: 'keywords',
-        content: `${APP_NAME}, login, signin`,
-      });
+      this.titleService.setTitle(`${APP_NAME} | ${this.viewName}`);
     });
   }
 
-  async getData(name: string) {
+  async fetchUsersData(email: string) {
     try {
-      const result = await networkRequest.send(`${BACKEND_URL}/PurchaseOrder`, "GET");
+      const result = await networkRequest.send(`${BACKEND_URL}/user/${email}`, "GET")
+      console.log(result);
+
+      if (!result) {
+        this.openSnackBar(`Userdata not found!`, 'Close');
+        this.isLoading = false;
+        return;
+      }
+
+      this.userData = { ...result };
+      this.isLoading = false;
+    } catch (error: any) {
+      console.log(error);
+      this.openSnackBar(`${error.message}`, 'Close');
+      this.isLoading = false;
+    }
+  }
+
+  async fetchViewDataList() {
+    this.isLoading = true;
+    try {
+      const result = await networkRequest.send(this.currentView!['list_endpoint'], "GET");
+
+
 
       console.log(result);
-    } catch (error) {
+
+      this.isLoading = false;
+    } catch (error: any) {
       console.log(error);
+      this.openSnackBar(`${error.message}`, 'Close');
+      this.isLoading = false;
     }
   }
 
@@ -151,17 +176,9 @@ export class MetaviewComponent implements OnInit {
     console.log(this.data);
   }
 
-
-
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 10000,
     });
-  }
-
-  toggleUserDropDown() {
-    this.openUserDropdown = !this.openUserDropdown;
-    console.log(this.openUserDropdown);
-    
   }
 }

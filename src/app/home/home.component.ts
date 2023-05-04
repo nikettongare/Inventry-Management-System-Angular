@@ -82,6 +82,7 @@ export class HomeComponent implements OnInit {
   }
 
   async fetchStatData() {
+    this.isLoading = true;
     try {
       const [purchaseRes, productRes, salesRes, supplierRes] = await Promise.all([
         networkRequest.send(`${BACKEND_URL}/PurchaseOrder`, "GET"),

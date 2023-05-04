@@ -24,6 +24,10 @@ import { AddSalesOrderComponent } from './add-sales-order/add-sales-order.compon
 import { AddPurchaseOrderComponent } from './add-purchase-order/add-purchase-order.component';
 import { AsidePanelComponent } from './aside-panel/aside-panel.component';
 import { AppbarComponent } from './appbar/appbar.component';
+import { ProductViewComponent } from './product-view/product-view.component';
+import { SupplierViewComponent } from './supplier-view/supplier-view.component';
+import { PurchaseViewComponent } from './purchase-view/purchase-view.component';
+import { SalesViewComponent } from './sales-view/sales-view.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +45,10 @@ import { AppbarComponent } from './appbar/appbar.component';
     AddPurchaseOrderComponent,
     AsidePanelComponent,
     AppbarComponent,
+    ProductViewComponent,
+    SupplierViewComponent,
+    PurchaseViewComponent,
+    SalesViewComponent,
   ],
   entryComponents: [DialogComponent],
   imports: [
