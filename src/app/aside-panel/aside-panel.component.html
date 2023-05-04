@@ -1,0 +1,38 @@
+<aside class="relative h-screen shadow-lg lg:block w-48">
+    <div
+      class="h-full bg-white dark:bg-gray-700 flex flex-col justify-between"
+    >
+      <!-- flex seprator -->
+      <div>
+        <!-- App Title -->
+        <div class="flex items-center justify-start pt-6 ml-8">
+          <p class="text-xl font-bold dark:text-white">
+            {{ AppName }}
+          </p>
+        </div>
+        <ng-content></ng-content>
+        <!-- Nav items -->
+        <nav class="mt-6 flex flex-col justify-between">
+          <a
+            *ngFor="let items of NavItems"
+            class="flex py-4 px-8 text-sm font-medium text-gray-400 hover:text-gray-950 hover:bg-gray-100 border-l-4"
+            [ngClass]="
+              items.href === CurrentRoute
+                ? 'border-purple-500 bg-gray-50'
+                : 'border-transparent'
+            "
+            href="{{ items.href }}"
+          >
+            {{ items.title }}
+          </a>
+        </nav>
+      </div>
+
+      <!-- logout button -->
+      <button
+        class="flex py-4 px-8 text-sm font-medium text-gray-400 hover:text-gray-950 hover:bg-gray-100 border-l-4"
+      >
+        Log Out
+      </button>
+    </div>
+  </aside>  

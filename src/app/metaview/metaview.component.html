@@ -1,0 +1,253 @@
+<main class="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
+  <div class="flex items-start justify-between">
+    <!-- Side bar -->
+    <app-aside-panel />
+    <div class="flex flex-col w-full md:space-y-4">
+      <!-- header | appbar -->
+      <header class="z-40 flex items-center justify-between w-full h-16">
+        <div
+          class="relative z-20 flex flex-col justify-end h-full px-3 md:w-full"
+        >
+          <div class="relative flex items-center justify-end w-full gap-2">
+            <!-- Users Icon -->
+            <span class="relative block">
+              <img
+                alt="profil"
+                src="assets/placeholder.png"
+                class="mx-auto object-cover rounded-full h-10 w-10"
+              />
+            </span>
+            <!-- Users Name -->
+            <p class="flex items-center text-gray-500 dark:text-white text-md">
+              {{ UsersName }}
+            </p>
+
+            <span class="relative felx items-center">
+              <button (click)="toggleUserDropDown()" class="cursor-pointer">
+                <svg
+                  width="20"
+                  height="20"
+                  class="text-gray-400 cursor-pointer rounded-full hover:bg-gray-200"
+                  fill="currentColor"
+                  viewBox="0 0 1792 1792"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1408 704q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45z"
+                  ></path>
+                </svg>
+              </button>
+
+              <div
+                *ngIf="openUserDropdown"
+                class="absolute right-0 w-56 mt-4 origin-top-right bg-white rounded-md shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
+              >
+                <div
+                  class="py-1"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600"
+                    role="menuitem"
+                  >
+                    <span class="flex flex-col">
+                      <span> Profile </span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+      </header>
+      <!-- Main Content -->
+      <div class="h-screen px-4 pb-24 overflow-auto md:px-6">
+        <!-- Welcome user heading -->
+        <h1 class="text-4xl font-semibold text-gray-800 dark:text-white">
+          Good afternoom, {{ UsersName }}
+        </h1>
+        <!-- Description dashboard -->
+        <h2 class="text-gray-400 text-md">
+          Here&#x27;s what&#x27;s happening with your inventry account.
+        </h2>
+
+        <div class="flex justify-between items-center px-8 gap-8 pt-4">
+          <input
+            type="text"
+            id="rounded-email"
+            class="rounded-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            placeholder="Search..."
+          />
+
+          <a
+            routerLink="/add-supplier"
+            type="button"
+            class="w-60 py-2 px-4 flex justify-center items-center gap-2 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg capitalize"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              version="1.1"
+              id="Capa_1"
+              x="0px"
+              y="0px"
+              viewBox="0 0 512 512"
+              style="enable-background: new 0 0 512 512"
+              xml:space="preserve"
+              class="h-4 w-4 fill-white"
+            >
+              <g>
+                <path
+                  d="M480,224H288V32c0-17.673-14.327-32-32-32s-32,14.327-32,32v192H32c-17.673,0-32,14.327-32,32s14.327,32,32,32h192v192   c0,17.673,14.327,32,32,32s32-14.327,32-32V288h192c17.673,0,32-14.327,32-32S497.673,224,480,224z"
+                />
+              </g>
+            </svg>
+            Add {{ viewName }}
+          </a>
+        </div>
+
+        <span
+          *ngIf="!data.length"
+          class="mt-12 flex flex-col items-center justify-center"
+        >
+          <img
+            alt="profil"
+            src="assets/nodata.svg"
+            class="mx-auto object-cover h-60 w-60"
+          />
+
+          <h1
+            *ngIf="!data.length"
+            class="mt-10 text-center text-2xl font-semibold text-gray-800 dark:text-white"
+          >
+            No Data Found!
+          </h1>
+        </span>
+
+        <div
+          *ngIf="!isLoading && data.length"
+          class="container mt-8 w-full px-4 mx-auto sm:px-8"
+        >
+          <div *ngIf="isLoading" class="h-2 w-full bg-white">
+            <div
+              class="h-full bg-blue-500 animate transition-all animate-pulse"
+            ></div>
+          </div>
+
+          <table class="min-w-full leading-normal bg-white">
+            <thead
+              class="bg-blue-200 border-b border-gray-200 text-sm text-left text-gray-800 uppercase"
+            >
+              <tr>
+                <th
+                  *ngFor="let items of keysList"
+                  scope="col"
+                  class="px-5 py-3"
+                >
+                  {{ items }}
+                </th>
+                <th scope="col" class="px-5 py-3"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let rawList of valuesData; let i = index"
+                class="text-sm border-b text-gray-900 whitespace-no-wrap border-gray-200"
+              >
+                <td *ngFor="let item of rawList" class="px-5 py-5">
+                  {{ item }}
+                </td>
+
+                <td class="flex p-2 gap-2">
+                  <button
+                    class="flex items-center p-2 text-gray-400 bg-gray-100 hover:bg-gray-200 rounded-full shadow hover:text-gray-700 text-md h-8 w-8"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      id="Layer_1"
+                      data-name="Layer 1"
+                      viewBox="0 0 24 24"
+                      class="fill-green-600"
+                    >
+                      <polygon
+                        points="14.604 5.687 0 20.29 0 24 3.71 24 18.313 9.396 14.604 5.687"
+                      />
+                      <path
+                        d="M23.232.768a2.624,2.624,0,0,0-3.71,0l-3.5,3.505,3.709,3.709,3.5-3.5A2.624,2.624,0,0,0,23.232.768Z"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    (click)="deleteRow(i)"
+                    class="flex items-center p-2 text-gray-400 bg-gray-100 hover:bg-gray-200 rounded-full shadow hover:text-gray-700 text-md h-8 w-8"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      version="1.1"
+                      id="Capa_1"
+                      x="0px"
+                      y="0px"
+                      viewBox="0 0 512 512"
+                      style="enable-background: new 0 0 512 512"
+                      xml:space="preserve"
+                      class="fill-red-600"
+                    >
+                      <g>
+                        <path
+                          d="M448,85.333h-66.133C371.66,35.703,328.002,0.064,277.333,0h-42.667c-50.669,0.064-94.327,35.703-104.533,85.333H64   c-11.782,0-21.333,9.551-21.333,21.333S52.218,128,64,128h21.333v277.333C85.404,464.214,133.119,511.93,192,512h128   c58.881-0.07,106.596-47.786,106.667-106.667V128H448c11.782,0,21.333-9.551,21.333-21.333S459.782,85.333,448,85.333z    M234.667,362.667c0,11.782-9.551,21.333-21.333,21.333C201.551,384,192,374.449,192,362.667v-128   c0-11.782,9.551-21.333,21.333-21.333c11.782,0,21.333,9.551,21.333,21.333V362.667z M320,362.667   c0,11.782-9.551,21.333-21.333,21.333c-11.782,0-21.333-9.551-21.333-21.333v-128c0-11.782,9.551-21.333,21.333-21.333   c11.782,0,21.333,9.551,21.333,21.333V362.667z M174.315,85.333c9.074-25.551,33.238-42.634,60.352-42.667h42.667   c27.114,0.033,51.278,17.116,60.352,42.667H174.315z"
+                        />
+                      </g>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div
+          *ngIf="isLoading"
+          class="w-full my-12 flex items-center justify-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            style="
+              margin: 0;
+              background: none;
+              display: block;
+              shape-rendering: auto;
+            "
+            width="80px"
+            height="80px"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="xMidYMid"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              fill="none"
+              stroke="#000"
+              stroke-width="13"
+              r="37"
+              stroke-dasharray="174.35839227423352 60.119464091411174"
+            >
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                repeatCount="indefinite"
+                dur="1s"
+                values="0 50 50;360 50 50"
+                keyTimes="0;1"
+              ></animateTransform>
+            </circle>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

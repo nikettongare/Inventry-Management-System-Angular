@@ -1,0 +1,166 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="max-w-md w-full px-6 py-8 bg-white shadow-md rounded-md">
+      <h2 class="text-2xl font-bold mb-4">Please Register</h2>
+      <form [formGroup]="loginForm" (submit)="onSubmit()" class="space-y-4">
+        <div>
+          <label for="name" class="block text-gray-700 font-bold mb-2"
+            >Name:</label
+          >
+          <input
+            type="name"
+            id="name"
+            name="name"
+            formControlName="name"
+            required
+            class="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+  
+          <div
+            *ngIf="
+              loginForm.get('name')!.invalid &&
+              (loginForm.get('name')!.dirty || loginForm.get('name')!.touched)
+            "
+            class="text-red-500 text-sm mt-1 ml-2"
+          >
+            <div *ngIf="loginForm.get('name')!.errors!['required']">
+              Name is required.
+            </div>            
+          </div>
+        </div>
+        <div>
+          <label for="phone" class="block text-gray-700 font-bold mb-2"
+            >Phone:</label
+          >
+          <input
+            type="phone"
+            id="phone"
+            name="phone"
+            formControlName="phone"
+            required
+            class="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+  
+          <div
+            *ngIf="
+              loginForm.get('phone')!.invalid &&
+              (loginForm.get('phone')!.dirty || loginForm.get('phone')!.touched)
+            "
+            class="text-red-500 text-sm mt-1 ml-2"
+          >
+            <div *ngIf="loginForm.get('phone')!.errors!['required']">
+              Phone is required.
+            </div>  
+            <div *ngIf="loginForm.get('phone')!.errors!['pattern']">
+              Phone shoud only contains the numbers.
+            </div>                   
+          </div>
+        </div>
+        <div>
+          <label for="email" class="block text-gray-700 font-bold mb-2"
+            >Email:</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            formControlName="email"
+            required
+            class="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+  
+          <div
+            *ngIf="
+              loginForm.get('email')!.invalid &&
+              (loginForm.get('email')!.dirty || loginForm.get('email')!.touched)
+            "
+            class="text-red-500 text-sm mt-1 ml-2"
+          >
+            <div *ngIf="loginForm.get('email')!.errors!['required']">
+              Email is required.
+            </div>
+            <div *ngIf="loginForm.get('email')!.errors!['email']">
+              Email must be a valid email address.
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="password" class="block text-gray-700 font-bold mb-2"
+            >Password:</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            formControlName="password"
+            required
+            class="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <div
+            *ngIf="
+              loginForm.get('password')!.invalid &&
+              (loginForm.get('password')!.dirty ||
+                loginForm.get('password')!.touched)
+            "
+            class="text-red-500 text-sm mt-1 ml-2"
+          >
+            <div *ngIf="loginForm.get('password')!.errors!['required']">
+              Password is required.
+            </div>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-400 w-full disabled:bg-blue-400 hover:bg-blue-700 cursor-pointer text-white font-bold py-2 px-4 rounded-md disabled:opacity-50"
+          [disabled]="!loginForm.valid || isLoading"
+        >
+          <div *ngIf="isLoading" class="flex items-center justify-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              style="
+                margin: 0;
+                background: none;
+                display: block;
+                shape-rendering: auto;
+              "
+              width="30px"
+              height="30px"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="xMidYMid"
+            >
+              <circle
+                cx="50"
+                cy="50"
+                fill="none"
+                stroke="#fff"
+                stroke-width="13"
+                r="37"
+                stroke-dasharray="174.35839227423352 60.119464091411174"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  repeatCount="indefinite"
+                  dur="1s"
+                  values="0 50 50;360 50 50"
+                  keyTimes="0;1"
+                ></animateTransform>
+              </circle>
+            </svg>
+            <span class="text-white">Loading...</span>
+          </div>
+          <span *ngIf="!isLoading">Register</span>
+        </button>
+      </form>
+  
+      <p class="mt-4 flex items-center justify-center">
+        Have an account ? {{ "&nbsp;"
+        }}<a
+          routerLink="/login"
+          class="text-blue-600 cursor-pointer hover:underline"
+          >Login.</a
+        >
+      </p>
+    </div>
+  </div>
+  
