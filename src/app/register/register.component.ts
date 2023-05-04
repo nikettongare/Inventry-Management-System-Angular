@@ -15,11 +15,11 @@ export class RegisterComponent {
 
   ngOnInit(): void { 
     // Update the page title
-    this.titleService.setTitle(`${APP_NAME} | Login`);
+    this.titleService.setTitle(`${APP_NAME} | Register`);
 
     // Update the meta tags
-    this.metaService.updateTag({ name: 'description', content: `Please Login into the ${APP_NAME}` });
-    this.metaService.updateTag({ name: 'keywords', content: `${APP_NAME}, login, signin` });  
+    this.metaService.updateTag({ name: 'description', content: `Please Register into the ${APP_NAME}` });
+    this.metaService.updateTag({ name: 'keywords', content: `${APP_NAME}, Register, signup` });  
     
      // check for user authentication
      const xAuth = localStorage.getItem("x-auth");

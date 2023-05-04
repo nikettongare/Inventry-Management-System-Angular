@@ -15,8 +15,8 @@ export class ProfileComponent {
   isLoading: boolean = false;
 
   name: any = new FormControl('', [Validators.required]);
-  phone: any = new FormControl('', [Validators.required, Validators.pattern((/^\d+$/))]);
-  password: any = new FormControl('', [Validators.required]);
+  phone: any = new FormControl('', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]);
+  password: any = new FormControl('', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]);
 
   profileForm = new FormGroup({
     name: this.name,
@@ -25,9 +25,9 @@ export class ProfileComponent {
   });
 
   userData: { [key: string]: any } = {
-    name: "Bakasur Chanawala",
-    phone: 8237903668,
-    email: "bakasur@gmail.com"
+    name: "Unknown User",
+    phone: "00000000",
+    email: "unknown@gmail.com"
   }
 
 
@@ -51,7 +51,6 @@ export class ProfileComponent {
       // this.fetchUsersData(email);
     }
   }
-
 
   async fetchUsersData(email: string) {
     try {
@@ -80,12 +79,29 @@ export class ProfileComponent {
     }
   }
 
-  onSubmit() { 
-    this.profileForm.patchValue({
-        name: this.userData['name'],
-        phone: this.userData['phone'],
-        password: this.userData['password'],
-      });
+  async onSubmit() { 
+    try {
+      const result = await networkRequest.send(`${BACKEND_URL}/user`, "PUT")
+      console.log(result);
+
+      if (!result) {
+        this.openSnackBar(`Something wents wrong, User not updated!`, 'Close');
+        this.isLoading = false;
+        return;
+      }
+
+      if(result) {
+        this.openSnackBar(`User Successfully updated!`, 'Close');
+        this.isLoading = false;
+        return;
+      }
+
+      this.isLoading = false;
+    } catch (error: any) {
+      console.log(error);
+      this.openSnackBar(`${error.message}`, 'Close');
+      this.isLoading = false;
+    }
   }
 
   openSnackBar(message: string, action: string) {

@@ -1,37 +1,6 @@
 <section
   class="h-screen bg-gray-100/50 flex flex-col items-center justify-center"
 >
-  <div *ngIf="isLoading" class="w-full my-12 flex items-center justify-center">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      style="margin: 0; background: none; display: block; shape-rendering: auto"
-      width="80px"
-      height="80px"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="xMidYMid"
-    >
-      <circle
-        cx="50"
-        cy="50"
-        fill="none"
-        stroke="#000"
-        stroke-width="13"
-        r="37"
-        stroke-dasharray="174.35839227423352 60.119464091411174"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          repeatCount="indefinite"
-          dur="1s"
-          values="0 50 50;360 50 50"
-          keyTimes="0;1"
-        ></animateTransform>
-      </circle>
-    </svg>
-  </div>
-
   <form
     [formGroup]="profileForm"
     (submit)="onSubmit()"
@@ -52,6 +21,7 @@
       </div>
     </div>
     <div class="space-y-6 bg-white">
+      <!-- Account filed directly set from local storage -->
       <div
         class="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0"
       >
@@ -74,15 +44,16 @@
       >
         <h2 class="max-w-sm mx-auto md:w-1/3">Personal info</h2>
         <div class="max-w-sm mx-auto space-y-5 md:w-2/3">
+          <!-- name field -->
           <div>
             <div class="relative">
               <input
                 type="text"
                 id="name"
                 name="name"
+                placeholder="Enter your name"
                 formControlName="name"
                 class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-               
               />
               <div
                 *ngIf="
@@ -98,6 +69,7 @@
               </div>
             </div>
           </div>
+          <!-- phone field -->
           <div>
             <div class="relative">
               <input
@@ -105,8 +77,8 @@
                 id="phone"
                 name="phone"
                 formControlName="phone"
+                placeholder="Enter You phone number"
                 class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-               
               />
               <div
                 *ngIf="
@@ -116,43 +88,56 @@
                 "
                 class="text-red-500 text-sm mt-1 ml-2"
               >
-                <div *ngIf="profileForm.get('phone')!.errors!['required']">
-                  Phone is required.
-                </div>
-                <div *ngIf="profileForm.get('phone')!.errors!['pattern']">
-                  Invalid Phone Number.
-                </div>
+              <div *ngIf="profileForm.get('phone')!.errors!['required']">
+                Phone is required.
+              </div>  
+              <div *ngIf="profileForm.get('phone')!.errors!['pattern']">
+                Phone must only contains 10 digits.
+              </div>  
               </div>
             </div>
           </div>
         </div>
       </div>
       <hr />
+
+      <!-- change password field -->
       <div
-        class="items-center w-full p-8 space-y-4 text-gray-500 md:inline-flex md:space-y-0"
+        class="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0"
       >
-        <h2 class="max-w-sm mx-auto md:w-4/12">Change password</h2>
-        <div
-          class="w-full max-w-sm pl-2 mx-auto space-y-5 md:w-5/12 md:pl-9 md:inline-flex"
-        >
-          <div class="relative">
-            <input
-              type="text"
-              id="user-info-password"
-              class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-              placeholder="Password"
-            />
+        <h2 class="max-w-sm mx-auto md:w-1/3">Change password</h2>
+        <div class="max-w-sm mx-auto space-y-5 md:w-2/3">
+          <div>
+            <div class="relative">
+              <input
+                type="Password"
+                id="Password"
+                formControlName="password"
+                class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                placeholder="Password"
+              />
+              <div
+                *ngIf="
+                  profileForm.get('password')!.invalid &&
+                  (profileForm.get('password')!.dirty ||
+                    profileForm.get('password')!.touched)
+                "
+                class="text-red-500 text-sm mt-1 ml-2"
+              >
+                <div *ngIf="profileForm.get('password')!.errors!['required']">
+                  Password is required.
+                </div>
+                <div *ngIf="profileForm.get('password')!.errors!['pattern']">
+                  Invalid password, password must contains atleast 1 Uppercase
+                  latter, 1 Special case latter and 1 Number and it will 8
+                  characters long.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="text-center md:w-3/12 md:pl-6">
-          <button
-            type="button"
-            class="py-2 px-4 bg-pink-600 hover:bg-pink-700 focus:ring-pink-500 focus:ring-offset-pink-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-          >
-            Change
-          </button>
-        </div>
       </div>
+     
       <hr />
       <div class="w-full px-4 pb-4 ml-auto text-gray-500 md:w-1/3">
         <button
